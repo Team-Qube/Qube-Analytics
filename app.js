@@ -25,25 +25,29 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Socket.IO
-var usersData = [];
-
-User.find({}, function(err, user){
-	if(err) {
-		console.log("ERROR: " + err);
-	}
-	else {
-		for(var i = 0; i < user.length; i++){
-			usersData.push({
-				id: user[i]._id,
-				lastLogin: user[i].lastLogin,
-				loginCount: user[i].loginCount
-			});
+function getUserData(callback){ 
+	var temp = [];
+	User.aggregate([{ $project : { _id : 1, lastLogin: 1, loginCount : 1}}, { $sort : { lastLogin : -1 }} ], function(err, users){
+		if(err) {
+			console.log("ERROR: " + err);
 		}
-		console.log(usersData);
-	}
-});
+		else {
+			console.log(users);
+			callback(users);
+		}
+	});
+}
 
-
+function getTotalLoginCount(callback){
+	User.aggregate([{ $group : { _id : null, totalCount : { $sum : "$loginCount" } } }], function(err, result){
+		if(err){
+			console.log(err);
+		}
+		else{
+			callback(result);
+		}
+	});
+}
 // Node.js
 app.get('/', function(req, res) {
     res.render('index.html');
@@ -53,7 +57,12 @@ app.get('/', function(req, res) {
 var router = express.Router();
 
 io.on('connection', function (socket) {
-	socket.emit('init', {data : usersData});
+	getUserData(function(users){
+		socket.emit('init', {data : users});
+	});
+	getTotalLoginCount(function(result){
+		console.log(result);
+	});
 });
 
 router.route('/update/:data')

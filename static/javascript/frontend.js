@@ -5,7 +5,7 @@ $(document).on('ready', function(){
 		var content="";
 		for(var i = 0; i<data.data.length; i++){
 			var time =moment(new Date(data.data[i].lastLogin));
-			content+="<tr id='"+data.data[i].id+"'><td ='userID'> ID: "+data.data[i].id+"</td><td class='lastLogin' id="+data.data[i].lastLogin+">"+time.fromNow()+"</td><td id='loginCount'>"+data.data[i].loginCount+"</td></tr>";
+			content+="<tr id='"+data.data[i]._id+"'><td ='userID'> ID: "+data.data[i]._id+"</td><td class='lastLogin' id="+data.data[i].lastLogin+">"+time.fromNow()+"</td><td class='loginCount'>"+data.data[i].loginCount+"</td></tr>";
 		}
 		$('table').append(content);
 	});
@@ -13,9 +13,9 @@ $(document).on('ready', function(){
 	socket.on('update', function(data){
 		console.log('updating...');
 		var time = moment(new Date(data.data.lastLogin));
-		$('#'+data.data.id + ' td.lastLogin').text(time.fromNow());
-		$('#'+data.data.id + ' td.lastLogin').attr('id', data.data.lastLogin);
-		$('#'+data.data.id + ' td#loginCount').text(data.data.loginCount);
+		$('#'+data.data._id + ' td.lastLogin').text(time.fromNow());
+		$('#'+data.data._id + ' td.lastLogin').attr('id', data.data.lastLogin);
+		$('#'+data.data._id + ' td.loginCount').text(data.data.loginCount);
 	});
 
 	setInterval(function(){
