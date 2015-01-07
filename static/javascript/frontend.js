@@ -12,8 +12,10 @@ $(document).on('ready', function(){
 
 	socket.on('update', function(data){
 		console.log('updating...');
-		var time = moment(new Date(data.lastLogin));
-		$('#'+data.id + ' td#lastLogin').text(time);
-		$('#'+data.id + ' td#loginCount').text(data.loginCount);
+		var time = moment(new Date(data.data.lastLogin));
+		console.log(time);
+		console.log(data.data.loginCount);
+		$('#'+data.data.id + ' td#lastLogin').text(time.fromNow());
+		$('#'+data.data.id + ' td#loginCount').text(data.data.loginCount);
 	});
 });
