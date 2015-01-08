@@ -8,7 +8,6 @@ var database = {
 				console.log("ERROR: " + err);
 			}
 			else {
-				console.log(users);
 				callback(users);
 			}
 		});
