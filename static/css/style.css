@@ -4,4 +4,13 @@ td {
 .nvd3 .nv-groups .nv-point {
     stroke-opacity: 1 !important;
     stroke-width: 5px;
+
+table { 
+	counter-reset: line-number; 
+}
+
+td:first-child:before {
+	content: counter(line-number) ".";
+	counter-increment: line-number;
+	padding-right: 0.3em; 
 }
