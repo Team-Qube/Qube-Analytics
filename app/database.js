@@ -36,15 +36,17 @@ var database = {
 				},
 				lastLogin : { $min : "$lastLogin" }
 			}
-		}, {
+		},
+		{
 			$project : {
 				_id: 0,
 				x: "$lastLogin",
 				y: "$loginCount"
 			}
-		}, {
-			$sort : { date : -1 }
-		}
+		},
+		{ $sort : {
+			x : 1
+		}}
 		], function(err, result){
 			if(err){
 				console.log(err);
