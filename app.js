@@ -10,6 +10,7 @@ var bodyParser = require('body-parser');
 var methodOverride = require('method-override');
 
 var User = require('./app/user.js');
+var db = require('./app/database.js');
 
 mongoose.connect('mongodb://localhost/database');
 
@@ -25,29 +26,7 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Socket.IO
-function getUserData(callback){ 
-	var temp = [];
-	User.aggregate([{ $project : { _id : 1, lastLogin: 1, loginCount : 1}}, { $sort : { lastLogin : -1 }} ], function(err, users){
-		if(err) {
-			console.log("ERROR: " + err);
-		}
-		else {
-			console.log(users);
-			callback(users);
-		}
-	});
-}
 
-function getTotalLoginCount(callback){
-	User.aggregate([{ $group : { _id : null, totalCount : { $sum : "$loginCount" } } }], function(err, result){
-		if(err){
-			console.log(err);
-		}
-		else{
-			callback(result);
-		}
-	});
-}
 // Node.js
 app.get('/', function(req, res) {
     res.render('index.html');
@@ -57,11 +36,14 @@ app.get('/', function(req, res) {
 var router = express.Router();
 
 io.on('connection', function (socket) {
-	getUserData(function(users){
+	db.getUserData(function(users){
 		socket.emit('init', {data : users});
 	});
-	getTotalLoginCount(function(result){
+	db.getTotalLoginCount(function(result){
 		console.log(result);
+	});
+	db.getDates(function(result){
+		socket.emit('dates', {data: result});
 	});
 });
 

@@ -4,14 +4,20 @@
 		<meta charset="UTF-8">
 		<title>Test</title>
 		<link rel="stylesheet" href="/static/css/style.css">
+		<link rel="stylesheet" href="/static/framework/nvd3/nvd3.css">
 	</head>
 <body>
 	<table>
 	</table>
 
+	<div id='chart'>
+	  <svg style='height:600px; padding-bottom:30px;'> </svg>
+	</div>
 	<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 	<script src="/static/framework/moment/moment.js"></script>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script src="/static/framework/nvd3/nvd3.js"></script>
 	<script src="/static/javascript/frontend.js"></script>
 </body>
 </html>

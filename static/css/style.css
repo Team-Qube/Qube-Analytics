@@ -1,3 +1,7 @@
 td {
 	padding-right:30px;
 }
+.nvd3 .nv-groups .nv-point {
+    stroke-opacity: 1 !important;
+    stroke-width: 5px;
+}
