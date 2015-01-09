@@ -40,10 +40,13 @@ io.on('connection', function (socket) {
 		socket.emit('init', {data : users});
 	});
 	db.getTotalLoginCount(function(result){
-		console.log(result);
+		socket.emit('viewCount', {data:result});
 	});
 	db.getDates(function(result){
 		socket.emit('dates', {data: result});
+	});
+	db.getPlaylistCount(function(result){
+		socket.emit('playlistCount', {data: result});
 	});
 });
 

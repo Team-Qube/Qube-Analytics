@@ -54,6 +54,22 @@ var database = {
 				callback(result);
 			}
 		})
+	},
+
+	getPlaylistCount: function(callback){
+		User.aggregate([{
+				$unwind : "$playlist"
+			}, {
+				$group : { "_id" : "$playlist" }
+			}, {
+				$group : { "_id" : {} , count : {$sum:1} }}
+		], function(err, result){
+			if(err){
+				console.log(err);
+			} else {
+				callback(result);
+			}
+		});
 	}
 };
 module.exports = database;

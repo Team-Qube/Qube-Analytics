@@ -13,10 +13,13 @@ $(document).on('ready', function(){
 	socket.on('update', function(data){
 		console.log('updating...');
 		var time = moment(new Date(data.data.lastLogin));
-		console.log(JSON.stringify(data.data));
 		$('#'+data.data.id + ' td.lastLogin').text(time.fromNow());
 		$('#'+data.data.id + ' td.lastLogin').attr('id', data.data.lastLogin);
 		$('#'+data.data.id + ' td.loginCount').text(data.data.loginCount);
+	});
+
+	socket.on('viewCount', function(data){
+		$('#viewCount').text('Page view count: '+data.data[0].totalCount);
 	});
 
 	socket.on('dates', function(data){
@@ -58,6 +61,10 @@ $(document).on('ready', function(){
 
 	       return chart;
 	     });
+	});
+
+	socket.on('playlistCount', function(data){
+		$('#playlistCount').text('Playlist count: '+data.data[0].count);
 	});
 
 	setInterval(function(){
